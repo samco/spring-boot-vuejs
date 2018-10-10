@@ -1,6 +1,6 @@
-package de.jonashackt.springbootvuejs.repository;
+package au.id.couter.springbootvuejs.repository;
 
-import de.jonashackt.springbootvuejs.domain.User;
+import au.id.couter.springbootvuejs.domain.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
