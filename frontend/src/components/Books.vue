@@ -1,10 +1,23 @@
 <template>
   <div class="books">
-    <h1>List Books</h1>
+    <h1>Books</h1>
 
     <h4 v-if="errors.length" class="error">{{errors}}</h4>
-    <h4 v-if="response.length">{{response}}</h4>
-    <h4 v-if="!response.length && !errors.length">Loading...</h4>
+    <table class="table" v-if="books.length">
+      <thead>
+        <tr>
+          <th scope="col">Title</th>
+          <th scope="col">Author</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="book in books">
+          <td>{{book.title}}</td>
+          <td>{{book.author}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <h4 v-if="!books.length && !errors.length">Loading...</h4>
 
   </div>
 </template>
@@ -18,14 +31,14 @@ export default {
 
     data () {
       return {
-        response: [],
+        books: [],
         errors: []
       }
     },
     created() {
       AXIOS.get(`/books`)
         .then(response => {
-          this.response = response.data
+          this.books = response.data
         })
         .catch(e => {
           this.errors.push(e)

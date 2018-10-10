@@ -1,20 +1,12 @@
 <template>
   <div class="user">
-    <h1>Create User</h1>
-
-    <h3>Just some database interaction...</h3>
-
-    <input type="text" v-model="user.firstName" placeholder="first name">
-    <input type="text" v-model="user.lastName" placeholder="last name">
-
-    <button @click="createUser()">Create User</button>
-
-    <div v-if="showResponse"><h6>User created with Id: {{ response }}</h6></div>
-
-    <button v-if="showResponse" @click="retrieveUser()">Retrieve user {{user.id}} data from database</button>
-
-    <h4 v-if="showRetrievedUser">Retrieved User {{retrievedUser.firstName}} {{retrievedUser.lastName}}</h4>
-
+    <p><a href="#" v-bind:id="'user-' + id" v-on:click.prevent="loadLoans(id)">{{name}} {{email}}</a></p>
+    <ul v-if="loans.length">
+      <h4>Loans</h4>
+      <li v-for="loan in loans">{{loan.book.title}}</li>
+    </ul>
+    <p v-if="loansLoaded && !loans.length">No loans</p>
+    <p v-if="errors.length">{{errors}}</p>
   </div>
 </template>
 
@@ -24,51 +16,29 @@
 
   export default {
     name: 'user',
+    props: {
+      'id': Number,
+      'name': String,
+      'email': String
+    },
 
     data () {
       return {
-        response: [],
-        errors: [],
-        user: {
-          lastName: '',
-          firstName: '',
-          id: 0
-        },
-        showResponse: false,
-        retrievedUser: {},
-        showRetrievedUser: false
+        loansLoaded: false,
+        loans: [],
+        errors: []
       }
     },
     methods: {
-      // Fetches posts when the component is created.
-      createUser () {
-        var params = new URLSearchParams()
-        params.append('firstName', this.user.firstName)
-        params.append('lastName', this.user.lastName)
-
-        AXIOS.post(`/user`, params)
+      loadLoans(userId) {
+        AXIOS.get(`/loan/user/` + userId)
           .then(response => {
-            // JSON responses are automatically parsed.
-            this.response = response.data
-            this.user.id = response.data
-            console.log(response.data)
-            this.showResponse = true
+            this.loans = response.data;
+            this.loansLoaded = true;
           })
           .catch(e => {
             this.errors.push(e)
-          })
-      },
-      retrieveUser () {
-        AXIOS.get(`/user/` + this.user.id)
-          .then(response => {
-            // JSON responses are automatically parsed.
-            this.retrievedUser = response.data
-            console.log(response.data)
-            this.showRetrievedUser = true
-          })
-          .catch(e => {
-            this.errors.push(e)
-          })
+          });
       }
     }
   }
