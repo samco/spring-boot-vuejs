@@ -16,3 +16,11 @@ This allows me to avoid the uninteresting and low value plumbing work and instea
 proceed to solving the high value business problems.
 
 The git history will make clear what work is mine and what was part of the starting project.
+
+Given more time, the improvements I would make are:
+
+- TypeScript instead of untyped JavaScript
+- Make the UI prettier
+- Some polish on things like error handling
+- Better handling of large result sets
+- More complete navigation between elements such as books to loans, loans to users or books, etc
