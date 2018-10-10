@@ -1,9 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Hello from '@/components/Hello'
-import Service from '@/components/Service'
-import Bootstrap from '@/components/Bootstrap'
-import User from '@/components/User'
+import Users from '@/components/Users'
+import Books from '@/components/Books'
 
 Vue.use(Router)
 
@@ -15,19 +14,14 @@ export default new Router({
       component: Hello
     },
     {
-      path: '/callservice',
-      name: 'Service',
-      component: Service
+      path: '/users',
+      name: 'Users',
+      component: Users
     },
     {
-      path: '/bootstrap',
-      name: 'Bootstrap',
-      component: Bootstrap
-    },
-    {
-      path: '/user',
-      name: 'User',
-      component: User
+      path: '/books',
+      name: 'Books',
+      component: Books
     }
   ]
 })

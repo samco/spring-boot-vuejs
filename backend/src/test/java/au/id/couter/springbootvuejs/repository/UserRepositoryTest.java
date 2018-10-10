@@ -10,45 +10,26 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static org.hamcrest.Matchers.contains;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
 public class UserRepositoryTest {
 
-    @Autowired
-    private TestEntityManager entityManager;
+	@Autowired
+	private UserRepository userRepository;
 
-    @Autowired
-    private UserRepository users;
+	@Test
+	public void testFindAll() {
+		final List<User>
+			allUsers =
+			StreamSupport.stream(userRepository.findAll().spliterator(), false).collect(Collectors.toList());
 
-    private User norbertSiegmund = new User("Norbert", "Siegmund");
-    private User jonasHecht = new User("Jonas", "Hecht");
-
-    @Before
-    public void fillSomeDataIntoOurDb() {
-        // Add new Users to Database
-        entityManager.persist(norbertSiegmund);
-        entityManager.persist(jonasHecht);
-    }
-
-    @Test
-    public void testFindByLastName() throws Exception {
-        // Search for specific User in Database according to lastname
-        List<User> usersWithLastNameSiegmund = users.findByLastName("Siegmund");
-
-        assertThat(usersWithLastNameSiegmund, contains(norbertSiegmund));
-    }
-
-
-    @Test
-    public void testFindByFirstName() throws Exception {
-        // Search for specific User in Database according to firstname
-        List<User> usersWithFirstNameJonas = users.findByFirstName("Jonas");
-
-        assertThat(usersWithFirstNameJonas, contains(jonasHecht));
-    }
-
+		allUsers.get(0).getEmail().equals("norbert@example.com");
+	}
 }

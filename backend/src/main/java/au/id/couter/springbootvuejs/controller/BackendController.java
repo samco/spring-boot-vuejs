@@ -1,5 +1,9 @@
 package au.id.couter.springbootvuejs.controller;
 
+import au.id.couter.springbootvuejs.domain.Book;
+import au.id.couter.springbootvuejs.domain.Loan;
+import au.id.couter.springbootvuejs.repository.BookRepository;
+import au.id.couter.springbootvuejs.repository.LoanRepository;
 import au.id.couter.springbootvuejs.repository.UserRepository;
 import au.id.couter.springbootvuejs.domain.User;
 import org.slf4j.Logger;
@@ -12,34 +16,27 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class BackendController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(BackendController.class);
-
-    public static final String HELLO_TEXT = "Hello from Spring Boot Backend!";
-
     @Autowired
     private UserRepository userRepository;
 
-    @RequestMapping(path = "/hello")
-    public @ResponseBody String sayHello() {
-        LOG.info("GET called on /hello resource");
-        return HELLO_TEXT;
+    @Autowired
+    private BookRepository bookRepository;
+
+    @Autowired
+    private LoanRepository loanRepository;
+
+    @RequestMapping(path = "/users")
+    public @ResponseBody Iterable<User> findAllUsers() {
+        return userRepository.findAll();
     }
 
-    @RequestMapping(path = "/user", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody long addNewUser (@RequestParam String firstName, @RequestParam String lastName) {
-        User user = new User(firstName, lastName);
-        userRepository.save(user);
-
-        LOG.info(user.toString() + " successfully saved into DB");
-
-        return user.getId();
+    @RequestMapping(path = "/books")
+    public @ResponseBody Iterable<Book> findAllBooks() {
+        return bookRepository.findAll();
     }
 
-    @GetMapping(path="/user/{id}")
-    public @ResponseBody User getUserById(@PathVariable("id") long id) {
-        LOG.info("Reading user with id " + id + " from database.");
-        return userRepository.findById(id).get();
+    @GetMapping(path="/loan/user/{userId}")
+    public @ResponseBody Iterable<Loan> findLoansByUserId(@PathVariable("userId") long userId) {
+        return loanRepository.findByUserId(userId);
     }
-
 }

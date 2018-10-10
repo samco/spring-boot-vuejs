@@ -1,10 +1,10 @@
 import { shallowMount } from '@vue/test-utils';
-import User from '@/components/User'
+import Users from '@/components/Users'
 
-describe('User.vue', () => {
-  it('should render Create User Button', () => {
+describe('Users.vue', () => {
+  it('should render loading message', () => {
     const wrapper = shallowMount(User);
-    const contentButton = wrapper.find('button');
-    expect(contentButton.text()).toEqual('Create User');
+    const contentButton = wrapper.find('loading');
+    expect(contentButton.text()).toEqual('Loading...');
   })
 })
